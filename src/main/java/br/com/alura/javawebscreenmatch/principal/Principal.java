@@ -34,5 +34,9 @@ public class Principal {
 		}
 
 		temporadas.forEach(t ->t.episodios().forEach(e -> System.out.println(e.titulo())));
+        temporadas.stream()
+                .flatMap(t -> t.episodios().stream())
+                .map(e -> e.titulo())
+                .forEach(System.out::println);
     }
 }
