@@ -14,12 +14,6 @@ public class JavawebscreenmatchApplication implements CommandLineRunner {
 
 	@Override
 	public void run(String... args) throws Exception {
-
-//		json = consumoApi.obterDados("https://omdbapi.com/?t=gilmore+girls&season=1&episode=2&apikey=6585022c");
-//		DadosEpisodio dadosEpisodio = conversor.converter(json, DadosEpisodio.class);
-//
-
-
 		Principal principal = new Principal();
 		principal.exibeMenu();
 

@@ -18,7 +18,7 @@ public class Principal {
     private static final String API_KEY = "&apikey=6585022c";
 
     public void exibeMenu(){
-        System.out.printf("Digite o nome da séria para buscar: ");
+        System.out.printf("Digite o nome da série para buscar: ");
         var nomeSerie = leitura.nextLine();
         var json = consumo.obterDados(ENDERECO + nomeSerie.replace(" ", "+") + API_KEY);
 
@@ -33,6 +33,6 @@ public class Principal {
 			temporadas.add(dadosTemporada);
 		}
 
-		temporadas.forEach(System.out::println);
+		temporadas.forEach(t ->t.episodios().forEach(e -> System.out.println(e.titulo())));
     }
 }
