@@ -1,13 +1,16 @@
 package br.com.alura.javawebscreenmatch.principal;
 
+import br.com.alura.javawebscreenmatch.model.DadosEpisodio;
 import br.com.alura.javawebscreenmatch.model.DadosSerie;
 import br.com.alura.javawebscreenmatch.model.DadosTemporada;
 import br.com.alura.javawebscreenmatch.service.ConsumoApi;
 import br.com.alura.javawebscreenmatch.service.ConverteDados;
 
 import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.List;
 import java.util.Scanner;
+import java.util.stream.Collectors;
 
 public class Principal {
 
@@ -34,9 +37,17 @@ public class Principal {
 		}
 
 		temporadas.forEach(t ->t.episodios().forEach(e -> System.out.println(e.titulo())));
-        temporadas.stream()
+
+
+        List<DadosEpisodio> dadosEpisodios = temporadas.stream()
                 .flatMap(t -> t.episodios().stream())
-                .map(e -> e.titulo())
+                .collect(Collectors.toList());
+
+        System.out.println("\nEpisódios ordenados por avaliação (do maior para o menor):");
+        dadosEpisodios.stream()
+                .filter(e -> !e.avaliacao().equalsIgnoreCase("N/A"))
+                .sorted(Comparator.comparing(DadosEpisodio::avaliacao).reversed())
+                .limit(5)
                 .forEach(System.out::println);
     }
 }
