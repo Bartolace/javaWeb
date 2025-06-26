@@ -1,4 +1,4 @@
-package br.com.alura.javawebscreenmatch.exercicios.model;
+package br.com.alura.javawebscreenmatch.exerciciosExtras.model;
 
 public class Produto {
     private String nome;

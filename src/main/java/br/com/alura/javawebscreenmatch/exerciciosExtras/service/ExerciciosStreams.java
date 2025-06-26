@@ -1,7 +1,7 @@
-package br.com.alura.javawebscreenmatch.exercicios.service;
+package br.com.alura.javawebscreenmatch.exerciciosExtras.service;
 
-import br.com.alura.javawebscreenmatch.exercicios.model.Pessoa;
-import br.com.alura.javawebscreenmatch.exercicios.model.Produto;
+import br.com.alura.javawebscreenmatch.exerciciosExtras.model.Pessoa;
+import br.com.alura.javawebscreenmatch.exerciciosExtras.model.Produto;
 
 import java.util.ArrayList;
 import java.util.Arrays;
