@@ -3,26 +3,26 @@ package br.com.alura.javawebscreenmatch.model;
 import java.time.LocalDate;
 
 public class Episodio {
-    private Integer temporadas;
+    private Integer temporada;
     private String titulo;
     private Integer numeroEpisodio;
     private Double avaliacao;
     private LocalDate dataLancamento;
 
     public Episodio(Integer numeroTemporada, DadosEpisodio dadosEpisodio) {
-        this.temporadas = numeroTemporada;
+        this.temporada = numeroTemporada;
         this.titulo = dadosEpisodio.titulo();
         this.numeroEpisodio = dadosEpisodio.numero();
         this.avaliacao = dadosEpisodio.avaliacao().equalsIgnoreCase("N/A") ? 0.0 : Double.parseDouble(dadosEpisodio.avaliacao());
         this.dataLancamento = dadosEpisodio.dataLancamento().equalsIgnoreCase("N/A") ? null : LocalDate.parse(dadosEpisodio.dataLancamento());
     }
 
-    public Integer getTemporadas() {
-        return temporadas;
+    public Integer getTemporada() {
+        return temporada;
     }
 
-    public void setTemporadas(Integer temporadas) {
-        this.temporadas = temporadas;
+    public void setTemporada(Integer temporada) {
+        this.temporada = temporada;
     }
 
     public String getTitulo() {
@@ -59,7 +59,7 @@ public class Episodio {
 
     @Override
     public String toString() {
-        return "temporadas=" + temporadas +
+        return "temporadas=" + temporada +
                 ", titulo='" + titulo + '\'' +
                 ", numeroEpisodio=" + numeroEpisodio +
                 ", avaliacao=" + avaliacao +
