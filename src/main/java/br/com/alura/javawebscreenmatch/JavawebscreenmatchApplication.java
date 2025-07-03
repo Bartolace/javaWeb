@@ -1,6 +1,7 @@
 package br.com.alura.javawebscreenmatch;
 
 import br.com.alura.javawebscreenmatch.exerciciosExtras.service.ExerciciosStreams;
+import br.com.alura.javawebscreenmatch.exerciciosExtras.service.ExerciciosStreams02;
 import br.com.alura.javawebscreenmatch.principal.Principal;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
@@ -15,11 +16,10 @@ public class JavawebscreenmatchApplication implements CommandLineRunner {
 
 	@Override
 	public void run(String... args) throws Exception {
-		Principal principal = new Principal();
-		principal.exibeMenu();
+//		Principal principal = new Principal();
+//		principal.exibeMenu();
 
-//		ExerciciosStreams exe = new ExerciciosStreams();
-//		exe.pessoaMaiorDe18AnosOrdemAlfabetica();
-//		exe.filtrarProdutosEletronicosMaisBaratos();
+		ExerciciosStreams02 exe = new ExerciciosStreams02();
+		exe.exeComProdutos();
 	}
 }
