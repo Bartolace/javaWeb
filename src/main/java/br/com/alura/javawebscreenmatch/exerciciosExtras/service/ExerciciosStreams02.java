@@ -70,15 +70,39 @@ public class ExerciciosStreams02 {
         );
 
 
+
+
         Map<String, List<Produto>> agrupados = produtos.stream()
                 .collect(Collectors.groupingBy(Produto::getCategoria,
                         Collectors.toList()));
 
-        agrupados.entrySet().stream()
+        Map<String, DoubleSummaryStatistics> est = agrupados.entrySet().stream()
                 .collect(Collectors.toMap(
                         Map.Entry::getKey,
-                        e -> e.getValue().size()
+                        e -> e.getValue().stream()
+                                .collect(Collectors.summarizingDouble(Produto::getPreco))
+
                 ));
+
+        Map<String, Long> countByCat = est.entrySet().stream()
+                .collect(Collectors.toMap(
+                        Map.Entry::getKey,
+                        e -> e.getValue().getCount()
+                ));
+
+        Map<String, Double> maxByCat = est.entrySet().stream()
+                .collect(Collectors.toMap(
+                        Map.Entry::getKey,
+                        e -> e.getValue().getMax()
+                ));
+
+        Map<String, Double> precoTotalByCat = est.entrySet().stream()
+                .collect(Collectors.toMap(
+                        Map.Entry::getKey,
+                        e -> e.getValue().getSum()
+                ));
+
+
     }
 
 
