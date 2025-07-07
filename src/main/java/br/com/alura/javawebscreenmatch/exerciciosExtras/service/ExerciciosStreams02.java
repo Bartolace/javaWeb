@@ -69,9 +69,6 @@ public class ExerciciosStreams02 {
                 new Produto("Mesa", 700.0, "Móveis")
         );
 
-
-
-
         Map<String, List<Produto>> agrupados = produtos.stream()
                 .collect(Collectors.groupingBy(Produto::getCategoria,
                         Collectors.toList()));
@@ -90,19 +87,19 @@ public class ExerciciosStreams02 {
                         e -> e.getValue().getCount()
                 ));
 
-        Map<String, Double> maxByCat = est.entrySet().stream()
+        Map<String, Optional<Produto>> maxPrecoByCarOrOptinal = agrupados.entrySet().stream()
                 .collect(Collectors.toMap(
                         Map.Entry::getKey,
-                        e -> e.getValue().getMax()
-                ));
+                        e -> e.getValue().stream()
+                                .sorted(Comparator.comparingDouble(Produto::getPreco).reversed())
+                                .findFirst()
+            ));
 
         Map<String, Double> precoTotalByCat = est.entrySet().stream()
                 .collect(Collectors.toMap(
                         Map.Entry::getKey,
                         e -> e.getValue().getSum()
                 ));
-
-
     }
 
 
