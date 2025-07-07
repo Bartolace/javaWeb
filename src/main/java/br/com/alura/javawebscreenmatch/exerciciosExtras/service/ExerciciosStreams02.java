@@ -11,19 +11,17 @@ public class ExerciciosStreams02 {
 
     public void getMaiorNumero(){
         List<Integer> numeros = Arrays.asList(10, 20, 30, 40, 50);
-        IntSummaryStatistics est = numeros.stream()
-                .collect(Collectors.summarizingInt(Integer::intValue));
+        Optional<Integer> max = numeros.stream()
+                .max(Integer::compare);
 
-        System.out.println(est.getMax());
+        max.ifPresent(System.out::println);
     }
 
     public void agrupaPorTamanho() {
         List<String> palavras = Arrays.asList("java", "stream", "lambda", "code");
         Map<Integer, List<String>> agrupamento = palavras.stream()
                 .sorted(Comparator.naturalOrder())
-                .collect(Collectors.groupingBy(String::length,
-                        Collectors.toList()));
-
+                .collect(Collectors.groupingBy(String::length));
         System.out.println(agrupamento);
     }
 
@@ -37,29 +35,26 @@ public class ExerciciosStreams02 {
 
     public void somaDoQuadardoDosPares() {
         List<Integer> numeros = Arrays.asList(1, 2, 3, 4, 5, 6);
-        Stream<Integer> result = numeros.stream()
+        Integer somaDosQuadradosPares = numeros.stream()
                 .filter(n -> n % 2 == 0)
-                .map(n -> n * n);
+                .map(n -> n * n)
+                .reduce(0, Integer::sum);
 
-        result.forEach(System.out::println);
+        System.out.println(somaDosQuadradosPares);
     }
 
     public void separaParImpar() {
         List<Integer> numeros = Arrays.asList(1, 2, 3, 4, 5, 6);
 
-        numeros.stream()
-                .filter(n -> n % 2 == 0)
-                .collect(Collectors.toList())
-                .forEach(System.out::println);
+        Map<Boolean, List<Integer>> particionando = numeros.stream()
+                .collect(Collectors.partitioningBy(n -> n % 2 == 0));
 
-        numeros.stream()
-                .filter(n -> n % 2 != 0)
-                .collect(Collectors.toList())
-                .forEach(System.out::println);
+        System.out.println(particionando.get(true));
+        System.out.println(particionando.get(false));
     }
 
 
-    public void exeComProdutos() {
+    public void mYexeComProdutosAfterResolucao() {
         List<Produto> produtos = Arrays.asList(
                 new Produto("Smartphone", 800.0, "Eletrônicos"),
                 new Produto("Notebook", 1500.0, "Eletrônicos"),
@@ -70,15 +65,12 @@ public class ExerciciosStreams02 {
         );
 
         Map<String, List<Produto>> agrupados = produtos.stream()
-                .collect(Collectors.groupingBy(Produto::getCategoria,
-                        Collectors.toList()));
+                .collect(Collectors.groupingBy(Produto::getCategoria));
 
-        Map<String, DoubleSummaryStatistics> est = agrupados.entrySet().stream()
-                .collect(Collectors.toMap(
-                        Map.Entry::getKey,
-                        e -> e.getValue().stream()
-                                .collect(Collectors.summarizingDouble(Produto::getPreco))
-
+        Map<String, DoubleSummaryStatistics> est = produtos.stream()
+                .collect(Collectors.groupingBy(
+                        Produto::getCategoria,
+                        Collectors.summarizingDouble(Produto::getPreco)
                 ));
 
         Map<String, Long> countByCat = est.entrySet().stream()
@@ -102,7 +94,33 @@ public class ExerciciosStreams02 {
                 ));
     }
 
+    public void exeComProdutosResolucao() {
+        List<Produto> produtos = Arrays.asList(
+                new Produto("Smartphone", 800.0, "Eletrônicos"),
+                new Produto("Notebook", 1500.0, "Eletrônicos"),
+                new Produto("Teclado", 200.0, "Eletrônicos"),
+                new Produto("Cadeira", 300.0, "Móveis"),
+                new Produto("Monitor", 900.0, "Eletrônicos"),
+                new Produto("Mesa", 700.0, "Móveis")
+        );
 
+        Map<String, List<Produto>> agrupados = produtos.stream()
+                .collect(Collectors.groupingBy(Produto::getCategoria));
+
+        Map<String, Long> quantidadePorCat = produtos.stream()
+                .collect(Collectors.groupingBy(Produto::getCategoria,Collectors.counting()));
+
+        Map<String, Optional<Produto>> maxPriceByCat = produtos.stream()
+                .collect(Collectors.groupingBy(Produto::getCategoria,
+                        Collectors.maxBy(Comparator.comparingDouble(Produto::getPreco)))
+                );
+
+        Map<String, Double> summByCat = produtos.stream()
+                .collect(Collectors.groupingBy(
+                        Produto::getCategoria,
+                        Collectors.summingDouble(Produto::getPreco))
+                );
+    }
 
 
 
