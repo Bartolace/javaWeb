@@ -1,0 +1,33 @@
+package br.com.javawebfipemactch.service;
+
+import java.io.IOException;
+import java.net.URI;
+import java.net.http.HttpClient;
+import java.net.http.HttpRequest;
+import java.net.http.HttpResponse;
+
+public class ConsumoApiFipe {
+
+    public String obterDadosFipe(String endereco) {
+        HttpClient client = HttpClient.newHttpClient();
+
+        HttpRequest build = HttpRequest.newBuilder()
+                .uri(URI.create(endereco))
+                .build();
+
+        HttpResponse<String> response = null;
+
+        try {
+            response = client
+                    .send(build, HttpResponse.BodyHandlers.ofString());
+        }catch (IOException e){
+            throw new RuntimeException(e);
+        } catch (InterruptedException e) {
+            throw new RuntimeException(e);
+        }
+
+        String json = response.body();
+        return json;
+
+    }
+}

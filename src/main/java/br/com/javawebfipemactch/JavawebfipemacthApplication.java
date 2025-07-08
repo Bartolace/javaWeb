@@ -1,6 +1,5 @@
-package br.com.javawebfipemactch.model.service.principal;
+package br.com.javawebfipemactch;
 
-import br.com.alura.javawebscreenmatch.exerciciosExtras.service.ExerciciosStreams02;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
@@ -14,7 +13,6 @@ public class JavawebfipemacthApplication implements CommandLineRunner {
 
 	@Override
 	public void run(String... args) throws Exception {
-//		Principal principal = new Principal();
-//		principal.exibeMenu();
+
 	}
 }
