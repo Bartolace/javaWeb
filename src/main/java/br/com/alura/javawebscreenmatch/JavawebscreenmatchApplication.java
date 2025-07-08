@@ -16,10 +16,10 @@ public class JavawebscreenmatchApplication implements CommandLineRunner {
 
 	@Override
 	public void run(String... args) throws Exception {
-//		Principal principal = new Principal();
-//		principal.exibeMenu();
+		Principal principal = new Principal();
+		principal.exibeMenu();
 
-		ExerciciosStreams02 exe = new ExerciciosStreams02();
-		exe.mYexeComProdutosAfterResolucao();
+//		ExerciciosStreams02 exe = new ExerciciosStreams02();
+//		exe.mYexeComProdutosAfterResolucao();
 	}
 }

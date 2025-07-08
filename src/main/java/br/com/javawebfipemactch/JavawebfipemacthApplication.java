@@ -1,5 +1,6 @@
 package br.com.javawebfipemactch;
 
+import br.com.javawebfipemactch.principal.PrincipalFipe;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
@@ -13,6 +14,8 @@ public class JavawebfipemacthApplication implements CommandLineRunner {
 
 	@Override
 	public void run(String... args) throws Exception {
+		PrincipalFipe principal = new PrincipalFipe();
 
+		principal.exibeMenu();
 	}
 }

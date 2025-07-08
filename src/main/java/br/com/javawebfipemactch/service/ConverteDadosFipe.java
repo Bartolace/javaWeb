@@ -1,6 +1,7 @@
 package br.com.javawebfipemactch.service;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.JsonMappingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
@@ -18,4 +19,17 @@ public class ConverteDadosFipe implements IconverteDadosFipe {
             throw new RuntimeException(e);
         }
     }
+
+    @Override
+    public <T> T converterLista(String json, TypeReference<T> typeReference) {
+        try{
+            return mapper.readValue(json, typeReference);
+        } catch (JsonMappingException e) {
+            throw new RuntimeException(e);
+        } catch (JsonProcessingException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+
 }

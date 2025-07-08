@@ -21,9 +21,7 @@ public class Principal {
         System.out.printf("Digite o nome da série para buscar: ");
         var nomeSerie = leitura.nextLine();
         var json = consumo.obterDados(ENDERECO + nomeSerie.replace(" ", "+") + API_KEY);
-
 		DadosSerie dados = conversor.converter(json, DadosSerie.class);
-        System.out.println(dados);
 
 		List<DadosTemporada> temporadas = new ArrayList<>();
 		for(int i = 1; i <= dados.totalTemporadas(); i++ ){
