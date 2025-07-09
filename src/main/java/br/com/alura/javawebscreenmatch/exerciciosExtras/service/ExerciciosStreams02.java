@@ -9,7 +9,7 @@ import java.util.stream.Stream;
 
 public class ExerciciosStreams02 {
 
-    public void getMaiorNumero(){
+    public void getMaiorNumero() {
         List<Integer> numeros = Arrays.asList(10, 20, 30, 40, 50);
         Optional<Integer> max = numeros.stream()
                 .max(Integer::compare);
@@ -85,7 +85,7 @@ public class ExerciciosStreams02 {
                         e -> e.getValue().stream()
                                 .sorted(Comparator.comparingDouble(Produto::getPreco).reversed())
                                 .findFirst()
-            ));
+                ));
 
         Map<String, Double> precoTotalByCat = est.entrySet().stream()
                 .collect(Collectors.toMap(
@@ -108,7 +108,7 @@ public class ExerciciosStreams02 {
                 .collect(Collectors.groupingBy(Produto::getCategoria));
 
         Map<String, Long> quantidadePorCat = produtos.stream()
-                .collect(Collectors.groupingBy(Produto::getCategoria,Collectors.counting()));
+                .collect(Collectors.groupingBy(Produto::getCategoria, Collectors.counting()));
 
         Map<String, Optional<Produto>> maxPriceByCat = produtos.stream()
                 .collect(Collectors.groupingBy(Produto::getCategoria,
@@ -121,8 +121,6 @@ public class ExerciciosStreams02 {
                         Collectors.summingDouble(Produto::getPreco))
                 );
     }
-
-
 
 
 }
