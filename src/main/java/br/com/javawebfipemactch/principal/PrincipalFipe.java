@@ -47,13 +47,57 @@ public class PrincipalFipe {
         DadosModeloWrapper modeloWrapper = conversor.converter(json, DadosModeloWrapper.class);
         List<DadosModelo> modelos = modeloWrapper.modelos();
 
-        System.out.println("=================================================");
-        //capturar entrada do nome do modelo, filtrar e exibir modelos
+        System.out.println("===================== Modelos =====================");
         modelos.stream()
                 .sorted(Comparator.comparing(m -> m.nome().toLowerCase()))
                 .forEach(System.out::println);
 
 
+        System.out.println("Digite o nome do modelo que deseja consultar: ");
+        String modeloEscolhido = leitura.nextLine().toLowerCase();
+
+        List<DadosModelo> modelosFiltrados = modelos.stream()
+                .filter(m -> m.nome().toLowerCase().contains(modeloEscolhido))
+                .sorted(Comparator.comparing(DadosModelo::nome))
+                .toList();
+
+        System.out.println("==================== Modelos Filtrados ====================");
+        modelosFiltrados.forEach(System.out::println);
+
+
+
+
+
+
+
+
+        //capturar entrada do nome do modelo, filtrar e exibir modelos
+
+
+
 
     }
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
