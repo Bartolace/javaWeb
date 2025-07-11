@@ -20,7 +20,7 @@ public class PrincipalFipe {
     private static final String MODELOS = "/modelos";
     private static final String ANOS = "/anos";
 
-    
+
     public void exibeMenu(){
         System.out.println("Bem-vindo ao sistema de consulta de veículos da Tabela Fipe!");
         System.out.println("Digite o tipo de veículo: Carros, Motos ou Caminhões");
@@ -135,6 +135,13 @@ public class PrincipalFipe {
         ArrayList<DadosAnoModelo> dadosAnoModelos = conversor.converterLista(json, new TypeReference<ArrayList<DadosAnoModelo>>() {});
         return dadosAnoModelos;
     }
+
+//    private void fipeException(<T> T dados, String mensagemErro){
+//        if (marcas.isEmpty()) {
+//            System.out.println("Nenhuma marca encontrada para o tipo de veículo informado.");
+//            return;
+//        }
+//    }
 }
 
 
