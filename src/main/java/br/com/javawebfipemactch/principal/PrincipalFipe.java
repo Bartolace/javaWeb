@@ -1,10 +1,6 @@
 package br.com.javawebfipemactch.principal;
 
-import br.com.alura.javawebscreenmatch.service.ConsumoApi;
-import br.com.alura.javawebscreenmatch.service.ConverteDados;
-import br.com.javawebfipemactch.model.DadosMarca;
-import br.com.javawebfipemactch.model.DadosModelo;
-import br.com.javawebfipemactch.model.DadosModeloWrapper;
+import br.com.javawebfipemactch.model.*;
 import br.com.javawebfipemactch.service.ConsumoApiFipe;
 import br.com.javawebfipemactch.service.ConverteDadosFipe;
 import com.fasterxml.jackson.core.type.TypeReference;
@@ -28,30 +24,22 @@ public class PrincipalFipe {
     public void exibeMenu(){
         System.out.println("Bem-vindo ao sistema de consulta de veículos da Tabela Fipe!");
         System.out.println("Digite o tipo de veículo: Carros, Motos ou Caminhões");
-
         String tipoVeiculo = leitura.nextLine().toLowerCase();
 
-        String json = consumo.obterDadosFipe(ENDERECO + tipoVeiculo + MARCAS);
-
-        ArrayList<DadosMarca> marcas = conversor.converterLista(json, new TypeReference<ArrayList<DadosMarca>>() {});
-
-        System.out.println("=================================================");
+        ArrayList<DadosMarca> marcas = buscaMarcas(tipoVeiculo);
+        System.out.println("===================== Marcas =====================");
         marcas.stream()
                 .sorted(Comparator.comparing(m -> m.nome().toLowerCase()))
                 .forEach(System.out::println);
 
         System.out.println("Escolha um código de marca disponível acima: ");
         String codigoMarca = leitura.nextLine();
-        json = consumo.obterDadosFipe(ENDERECO + tipoVeiculo + MARCAS + "/" + codigoMarca + MODELOS);
 
-        DadosModeloWrapper modeloWrapper = conversor.converter(json, DadosModeloWrapper.class);
-        List<DadosModelo> modelos = modeloWrapper.modelos();
-
+        List<DadosModelo> modelos = buscaModelos(tipoVeiculo, codigoMarca);
         System.out.println("===================== Modelos =====================");
         modelos.stream()
                 .sorted(Comparator.comparing(m -> m.nome().toLowerCase()))
                 .forEach(System.out::println);
-
 
         System.out.println("Digite o nome do modelo que deseja consultar: ");
         String modeloEscolhido = leitura.nextLine().toLowerCase();
@@ -64,18 +52,62 @@ public class PrincipalFipe {
         System.out.println("==================== Modelos Filtrados ====================");
         modelosFiltrados.forEach(System.out::println);
 
+        System.out.println("Digite o código do modelo que deseja consultar: ");
+        String codigoModelo = leitura.nextLine();
+        ArrayList<DadosAnoModelo> dadosAnoModelos = buscaAnosModelos(tipoVeiculo, codigoMarca, codigoModelo);
 
+        System.out.println("==================== Avaliações ====================");
+        buscaAvaliacoes(dadosAnoModelos, tipoVeiculo, codigoMarca, codigoModelo)
+                .stream()
+                .sorted(Comparator.comparing(DadosAvaliacao::anoModelo))
+                .forEach(a -> System.out.println(
+                    a.modelo() + "  ano: " + a.anoModelo() + "  valor: " + a.valor() + "  combustível: " + a.combustivel(
+                )));
+    }
 
+    private ArrayList<DadosMarca> buscaMarcas(String tipoVeiculo){
+        validarTipoVeiculo(tipoVeiculo);
+        String json = consumo.obterDadosFipe(ENDERECO + tipoVeiculo + MARCAS);
 
+        return conversor.converterLista(json, new TypeReference<ArrayList<DadosMarca>>() {});
+    }
 
+    private void validarTipoVeiculo(String tipo) {
+        List<String> tiposValidos = List.of("carros", "motos", "caminhoes");
+        if (!tiposValidos.contains(tipo)) {
+            throw new IllegalArgumentException("Tipo de veículo inválido: " + tipo);
+        }
+    }
 
+    private ArrayList<DadosAvaliacao> buscaAvaliacoes(ArrayList<DadosAnoModelo> dadosAnoModelos, String tipoVeiculo, String codigoMarca, String codigoModelo) {
+        ArrayList<DadosAvaliacao> avaliacoes = new ArrayList<>();
+        for (DadosAnoModelo dadoAnoModelo: dadosAnoModelos){
+            var json = consumo.obterDadosFipe(ENDERECO + tipoVeiculo + MARCAS + "/" + codigoMarca + MODELOS + "/" + codigoModelo + ANOS + "/" + dadoAnoModelo.codigo());
+            DadosAvaliacao avaliacao = conversor.converter(json, DadosAvaliacao.class);
+            avaliacoes.add(avaliacao);
+        }
+        return avaliacoes;
+    }
 
+    private List<DadosModelo> buscaModelos(String tipoVeiculo, String codigoMarca){
+        var json = consumo.obterDadosFipe(ENDERECO + tipoVeiculo + MARCAS + "/" + codigoMarca + MODELOS);
+        validarBuscaModelos(json);
 
-        //capturar entrada do nome do modelo, filtrar e exibir modelos
+        DadosModeloWrapper modeloWrapper = conversor.converter(json, DadosModeloWrapper.class);
+        List<DadosModelo> modelos = modeloWrapper.modelos();
+        return modelos;
+    }
 
+    private void validarBuscaModelos(String json){
+        if(json.contains("invalid brand id")){
+            throw new IllegalArgumentException("Nenhum modelo encontrado para a marca selecionada.");
+        }
+    }
 
-
-
+    private ArrayList<DadosAnoModelo> buscaAnosModelos(String tipoVeiculo, String codigoMarca, String codigoModelo){
+        var json = consumo.obterDadosFipe(ENDERECO + tipoVeiculo + MARCAS + "/" + codigoMarca + MODELOS + "/" + codigoModelo + ANOS);
+        ArrayList<DadosAnoModelo> dadosAnoModelos = conversor.converterLista(json, new TypeReference<ArrayList<DadosAnoModelo>>() {});
+        return dadosAnoModelos;
     }
 }
 
